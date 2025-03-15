@@ -1,0 +1,167 @@
+package org.uniquindio.edu.co.poo.app;
+
+import org.uniquindio.edu.co.poo.model.Estudiante;
+import org.uniquindio.edu.co.poo.model.Universidad;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Objects;
+
+public class Main {
+    public static void main(String[] args) {
+        Universidad universidad = new Universidad("U", "calle");
+        boolean continuar = true;
+
+        while (continuar) {
+            // Opciones del menú
+            String[] opciones = {
+                    "Registrar Estudiante",
+                    "Ingresar Nota",
+                    "Actualizar Nota",
+                    "Calcular Promedio de un Estudiante",
+                    "Calcular Promedio General",
+                    "Mostrar Estudiante con Mayor Promedio",
+                    "Ver Información de Todos",
+                    "Ver informacion de un Estudiante",
+                    "Mostrar Estudiantes que Pueden Aprobar",
+                    "Mostra Estudiante con la mayor nota especifica",
+                    "Salir"
+            };
+
+            // Crear lista con las opciones
+            JList<String> lista = new JList<>(opciones);
+            lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+            // Mostrar el menú vertical en un JOptionPane
+            int seleccion = JOptionPane.showConfirmDialog(
+                    null,
+                    new JScrollPane(lista),
+                    "Seleccione una acción",
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+            if (seleccion == JOptionPane.OK_OPTION) {
+                String opcionElegida = lista.getSelectedValue();
+
+                if (opcionElegida == null) {
+                    JOptionPane.showMessageDialog(null, "No seleccionaste ninguna opción.");
+                    continue;
+                }
+
+                // Evaluar la opción seleccionada
+                switch (opcionElegida) {
+                    case "Registrar Estudiante":
+                        registrarEstudiante(universidad);
+                        break;
+                    case "Ingresar Nota":
+                        ingresarNota(universidad);
+                        break;
+                    case "Actualizar Nota":
+                        actualizarNota(universidad);
+                        break;
+                    case "Calcular Promedio de un Estudiante":
+                        calcularPromedioEstudiante(universidad);
+                        break;
+                    case "Calcular Promedio General":
+                        calcularPromedioGeneral(universidad);
+                        break;
+                    case "Mostrar Estudiante con Mayor Promedio":
+                        obtenerEstudianteMayorPromedio(universidad);
+                        break;
+                    case "Ver Información de Todos":
+                        mostrarEstudianteInfo(universidad);
+                        break;
+                    case "Ver informacion de un Estudiante":
+                        mostrarUnEstudianteInfo(universidad);
+                        break;
+                    case "Mostrar Estudiantes que Pueden Aprobar":
+                        mostrarEstudiantesPuedenAprobar(universidad);
+                        break;
+                    case "Mostra Estudiante con la mayor nota especifica":
+                        mostrarEstudianteMayorNota(universidad);
+                        break;
+                    case "Salir":
+                        continuar = false;
+                        JOptionPane.showMessageDialog(null, "¡Hasta luego!");
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Opción no válida.");
+                }
+            } else {
+                continuar = false;
+                JOptionPane.showMessageDialog(null, "¡Hasta luego!");
+            }
+        }
+    }
+
+    private static void registrarEstudiante(Universidad universidad) {
+        String nombre = JOptionPane.showInputDialog("Ingrese el nombre del estudiante");
+        String id = JOptionPane.showInputDialog("Ingrese el ID del estudiante");
+        String mensaje = universidad.registrarEstudiante(nombre, id);
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void ingresarNota(Universidad universidad) {
+        String identificacion = JOptionPane.showInputDialog("Ingrese la identificación del estudiante");
+        String nombreNota = JOptionPane.showInputDialog("Ingrese el nombre de la nota");
+        float valorNota = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el valor de la nota"));
+
+        String mensaje1 = universidad.registrarNota(identificacion, nombreNota, valorNota);
+        JOptionPane.showMessageDialog(null, mensaje1);
+    }
+
+    private static void actualizarNota(Universidad universidad) {
+        String identificacion = JOptionPane.showInputDialog("Ingrese la identificación del estudiante");
+        String nombreNota = JOptionPane.showInputDialog("Ingrese el nombre de la nota");
+        float nuevoValorNota = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el nuevo valor de la nota"));
+
+        String mensaje2 = universidad.actualizarNota(identificacion, nombreNota, nuevoValorNota);
+        JOptionPane.showMessageDialog(null, mensaje2);
+    }
+
+    private static void calcularPromedioEstudiante(Universidad universidad) {
+        String identificacion = JOptionPane.showInputDialog("Ingrese la identificación del estudiante");
+        Estudiante estudiante = universidad.buscarEstudiante(identificacion);
+        float promedio = estudiante.calcularDefinitiva();
+        JOptionPane.showMessageDialog(null, "El promedio del estudiante es: " + promedio);
+    }
+
+    private static void mostrarEstudianteInfo(Universidad universidad) {
+        JOptionPane.showMessageDialog(null, universidad.mostrarEstudianteNotaPromedio());
+    }
+
+    private static void calcularPromedioGeneral(Universidad universidad) {
+        float promedioGeneral = universidad.calcularPromedioGeneral();
+        JOptionPane.showMessageDialog(null, "El promedio general es: " + promedioGeneral);
+    }
+
+    private static void obtenerEstudianteMayorPromedio(Universidad universidad) {
+        String estudianteMayorPromedio = universidad.obtenerEstudianteMayorPromedio();
+        JOptionPane.showMessageDialog(null, "El estudiante con mayor promedio es: " + estudianteMayorPromedio);
+    }
+
+    private static void mostrarUnEstudianteInfo(Universidad universidad) {
+        String estudianteInfo = JOptionPane.showInputDialog("Ingrese el id del estudiante");
+        Estudiante estudianteEncontrado = universidad.buscarEstudiante(estudianteInfo);
+        if (estudianteEncontrado != null) {
+            float promedioEstudiante = estudianteEncontrado.calcularDefinitiva();
+            String infoEstudiantes = estudianteEncontrado.toString();
+            JOptionPane.showMessageDialog(null, infoEstudiantes + promedioEstudiante);
+        }else {
+            JOptionPane.showMessageDialog(null, "no existe el estudiante");
+        }
+
+    }
+
+    private static void mostrarEstudiantesPuedenAprobar(Universidad universidad) {
+        String mensaje = universidad.estudiantesPosibilidadAprobar();
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private static void mostrarEstudianteMayorNota(Universidad universidad) {
+        int posicionNota = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese que nota quiere ver: 1, 2, 3, 4, 5"));
+        String mensaje = universidad.estudianteMayorNota(posicionNota);
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+}
