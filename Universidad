@@ -1,0 +1,203 @@
+package org.uniquindio.edu.co.poo.model;
+
+import java.util.ArrayList;
+
+public class Universidad {
+    // atributos de la clase
+    private String nombre;
+    private String ubicacion;
+
+    //conexion con otras clases
+    private ArrayList<Estudiante> listaEstudiantes;
+
+    // constructor
+    public Universidad(String nombre, String ubicacion) {
+        this.nombre = nombre;
+        this.ubicacion = ubicacion;
+        this.listaEstudiantes = new ArrayList<Estudiante>();
+    }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+    public ArrayList<Estudiante> getListaEstudiantes() {
+        return listaEstudiantes;
+    }
+    public ArrayList<Estudiante> getEstudiantes() {
+        return listaEstudiantes;
+    }
+    public void setListaEstudiantes(ArrayList<Estudiante> listaEstudiantes) {
+        this.listaEstudiantes = listaEstudiantes;
+    }
+
+    @Override
+    public String toString() {
+        return "Universidad{" +
+                "nombre='" + nombre + '\'' +
+                ", ubicacion='" + ubicacion + '\'' +
+                '}';
+    }
+
+    // CRUD (Create, Read, Update, Delete
+    // registrar estudiante
+    public String registrarEstudiante(String nombre, String id) {
+        String mensaje             = "";
+        Estudiante encontrado      = null;
+        Estudiante nuevoEstudiante = null;
+
+        encontrado = buscarEstudiante(id);
+        if (encontrado != null) {
+            // ya existe en el sistema
+            mensaje += "Estudiante "+ encontrado.getNombre() + " ya existe";
+            return mensaje;
+        }
+        // no existe en el sistema entonses vamos a registrarlo
+        nuevoEstudiante = new Estudiante(nombre, id);
+        listaEstudiantes.add(nuevoEstudiante);
+        mensaje += "El estudiante fue registrado exitosamente";
+        return mensaje;
+    }
+
+    public Estudiante buscarEstudiante(String id) {
+        Estudiante encontrado = null;
+        // buscar en la lista
+            // for i
+//        for (int i = 0; i < listaEstudiante.size(); i++) {
+//            Estudiante estudianteAux = listaEstudiante.get(i);
+//        }
+            // for each
+        for (Estudiante estudianteAux : listaEstudiantes) {
+            if (estudianteAux.getId().equals(id)) {
+                return estudianteAux;
+            }
+
+        }
+        return encontrado;
+    }
+
+    // metodo registrarNota
+    public String registrarNota (String idEstudiante, String nombreNota, float valorNota) {
+        String mensaje = "";
+
+        Estudiante estudianteEncontrado = buscarEstudiante(idEstudiante);
+
+        if (estudianteEncontrado != null) {
+            mensaje = estudianteEncontrado.registrarNota(nombreNota, valorNota);
+
+        }else {
+            mensaje = "El estudiante no existe";
+        }
+        return mensaje;
+    }
+
+    public float calcularPromedioGeneral() {
+        float sumatoria = 0;
+
+        for (Estudiante estudiante : listaEstudiantes) {
+            sumatoria += estudiante.calcularDefinitiva();
+        }
+        return sumatoria / listaEstudiantes.size();
+    }
+
+
+
+    public String actualizarNota(String identificacion, String nombreNota, float nuevoValorNota) {
+        String mensaje = "";
+        Estudiante estudianteEncontrado = buscarEstudiante(identificacion);
+        if (estudianteEncontrado != null) {
+            mensaje = estudianteEncontrado.actualizarNota(nombreNota, nuevoValorNota);
+        }else {
+            mensaje = "El estudiante no existe";
+        }
+
+        return mensaje;
+    }
+
+
+    public String obtenerEstudianteMayorPromedio() {
+        String mensaje = "";
+        float promedioReemplazable = 0f;
+        for (Estudiante estudianteAux : listaEstudiantes) {
+            float promedioEstudiante = estudianteAux.calcularDefinitiva();
+            if (promedioEstudiante > promedioReemplazable) {
+                promedioReemplazable = promedioEstudiante;
+                mensaje += estudianteAux.getNombre();
+            }
+        }
+        return mensaje;
+    }
+
+    public String mostrarEstudianteNotaPromedio() {
+        String mensaje = "";
+
+        for (Estudiante estudianteAux : listaEstudiantes) {
+            float promedio = estudianteAux.calcularDefinitiva();
+            String infoEstudiante = estudianteAux.toString();
+            mensaje += "El: " + infoEstudiante + "Promedio: " + promedio + "\n";
+        }
+        return mensaje;
+    }
+
+    public String estudiantesPosibilidadAprobar() {
+
+        ArrayList<Estudiante> estudiantesPosAbrobar = new ArrayList<>();
+        String mensaje = "";
+        for (Estudiante estudianteAux : listaEstudiantes) {
+            float promedioEstudiante = estudianteAux.calcularDefinitiva();
+            if (promedioEstudiante < 3.0) {
+                float notaDebeSacar = estudianteAux.calcularCuantoDebeSacar(promedioEstudiante);
+                if (notaDebeSacar <= 5) {
+                    estudiantesPosAbrobar.add(estudianteAux);
+                    mensaje += estudiantesPosAbrobar.toString() + "debe sacar " +notaDebeSacar + " en la siguiente nota";
+                }else {
+                    mensaje += estudianteAux.getNombre() + " estudiante no tiene posibilidad de aporbar porque nesecita una nota mayor a 5.0" + "\n";
+                }
+            }else {
+                mensaje += "El estudiante " + estudianteAux.getNombre() + " no esta en peligro de reprobar";
+            }
+        }
+        return mensaje;
+    }
+
+
+    public String estudianteMayorNota(int NotaEspecifica) {
+        String mensaje = "";
+        String estudianteGanador = "";
+        float notaAlta = -1;
+        String nombreNota = "";
+        int posReal = NotaEspecifica - 1;
+
+        for (Estudiante estudianteAux : listaEstudiantes) {
+            Nota[] notaSestudiante = estudianteAux.getListaNotas();
+
+            if (notaSestudiante[posReal] != null) {
+                float notaActual = notaSestudiante[posReal].getValor();
+                if (notaActual > notaAlta) {
+                    notaAlta = notaActual;
+                    estudianteGanador = estudianteAux.getNombre();
+                    nombreNota = notaSestudiante[posReal].getNombre();
+                }
+            }
+        }
+
+        if (!estudianteGanador.isEmpty()) {
+            mensaje += "El estudiante con la mayor de " + nombreNota +
+                    " es " + estudianteGanador + " con una nota de " + notaAlta + ".";
+        } else {
+            mensaje += "No se encontró ningún estudiante con una nota válida en la posición " + NotaEspecifica + ".";
+        }
+
+        return mensaje;
+    }
+}
