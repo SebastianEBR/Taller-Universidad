@@ -76,6 +76,7 @@ public class Estudiante {
         return -1;
     }
 
+    //metodo para calcular la definitiva; aplica para UN estudiante
     public float calcularDefinitiva() {
         float sumatoria = 0;
         float definitiva = 0;
@@ -89,6 +90,7 @@ public class Estudiante {
         return definitiva;
     }
 
+    //metodo para actualizar el valor de una nota
     public String actualizarNota(String nombreNota, float nuevoValorNota) {
         String mensaje = "";
 
@@ -113,6 +115,7 @@ public class Estudiante {
         return notaEncontrada;
     }
 
+    // metodo para saber cuanto debe sacar un estudiante que va "mal" para aprobar
     public float calcularCuantoDebeSacar(float promedioEstudiante) {
         float notaDebeSacar = 0f;
         float promedioMinAprobar = 3.0f;
