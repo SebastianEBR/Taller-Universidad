@@ -16,6 +16,7 @@ public class Universidad {
         this.ubicacion = ubicacion;
         this.listaEstudiantes = new ArrayList<Estudiante>();
     }
+    // getters y setters
     public String getNombre() {
         return nombre;
     }
@@ -40,7 +41,7 @@ public class Universidad {
     public void setListaEstudiantes(ArrayList<Estudiante> listaEstudiantes) {
         this.listaEstudiantes = listaEstudiantes;
     }
-
+    // metodo toString
     @Override
     public String toString() {
         return "Universidad{" +
@@ -101,6 +102,7 @@ public class Universidad {
         return mensaje;
     }
 
+    //metodo para calcular el promedio general de los estudiantes
     public float calcularPromedioGeneral() {
         float sumatoria = 0;
 
@@ -111,7 +113,7 @@ public class Universidad {
     }
 
 
-
+    // metodo para actualizar el valor de una nota
     public String actualizarNota(String identificacion, String nombreNota, float nuevoValorNota) {
         String mensaje = "";
         Estudiante estudianteEncontrado = buscarEstudiante(identificacion);
@@ -124,7 +126,7 @@ public class Universidad {
         return mensaje;
     }
 
-
+    // metodo para obtener el estudiante con mayor promedio (en este caso tambien aplica para definitiva porque aun no se trabaja con el porcentaje de cada nota)
     public String obtenerEstudianteMayorPromedio() {
         String mensaje = "";
         float promedioReemplazable = 0f;
@@ -138,6 +140,7 @@ public class Universidad {
         return mensaje;
     }
 
+    //metodo para mostrar el estudiante con mayor promedio
     public String mostrarEstudianteNotaPromedio() {
         String mensaje = "";
 
@@ -149,8 +152,8 @@ public class Universidad {
         return mensaje;
     }
 
+    // metodo para saber que estudiantes de los que estan "mal" tienen posibilidad de aprobar
     public String estudiantesPosibilidadAprobar() {
-
         ArrayList<Estudiante> estudiantesPosAbrobar = new ArrayList<>();
         String mensaje = "";
         for (Estudiante estudianteAux : listaEstudiantes) {
@@ -170,7 +173,7 @@ public class Universidad {
         return mensaje;
     }
 
-
+    //metodo para saber que estudiante tiene la nota especifica (dada por el profe) mas alta
     public String estudianteMayorNota(int NotaEspecifica) {
         String mensaje = "";
         String estudianteGanador = "";
