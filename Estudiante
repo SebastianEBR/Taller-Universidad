@@ -1,0 +1,131 @@
+package org.uniquindio.edu.co.poo.model;
+
+import java.util.Arrays;
+
+public class Estudiante {
+    // atributos de clase
+    private String nombre;
+    private String id;
+
+    //conexion con otras clases
+    private Nota[] listaNotas = new Nota[5];
+
+
+    // constructor
+    public Estudiante(String nombre, String id) {
+        this.nombre = nombre;
+        this.id = id;
+    }
+
+    //metodos get y set
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Nota[] getListaNotas() {
+        return listaNotas;
+    }
+
+    public void setListaNotas(Nota[] listaNotas) {
+        listaNotas = listaNotas;
+    }
+
+    // metodo toString
+    @Override
+    public String toString() {
+        return "Estudiante: " +
+                "nombre: " + nombre +
+                "\n id: " + id +
+                "\n listaNotas: " + Arrays.toString(listaNotas) +
+                "\n";
+    }
+
+    // metodo para registrar nota
+    public String registrarNota(String nombreNota, float valorNota) {
+
+        int posDisponible = -1;
+        posDisponible = buscarPosicion();
+        if (posDisponible == -1) {
+            return "No hay espacio para mas notas";
+        }else {
+            Nota nota = new Nota(nombreNota, valorNota);
+            listaNotas[posDisponible] = nota;
+            return "La nota fue registrada con exito";
+        }
+    }
+
+    private int buscarPosicion() {
+        for (int i = 0; i < listaNotas.length; i++) {
+            if (listaNotas[i] == null) {
+                return i;
+            }
+        }
+        // no hay cupo para mas notas
+        return -1;
+    }
+
+    public float calcularDefinitiva() {
+        float sumatoria = 0;
+        float definitiva = 0;
+
+        for (Nota notaAux : listaNotas) {
+            if (notaAux != null) {
+                sumatoria += notaAux.getValor();
+            }
+        }
+        definitiva = sumatoria / listaNotas.length;
+        return definitiva;
+    }
+
+    public String actualizarNota(String nombreNota, float nuevoValorNota) {
+        String mensaje = "";
+
+        Nota notaEncontrada = buscarNota(nombreNota);
+        if (notaEncontrada != null) {
+            mensaje = notaEncontrada.actualizarNota(nuevoValorNota);
+        }else {
+            mensaje = "la nota no esta registrada";
+        }
+
+        return  mensaje;
+    }
+
+    private Nota buscarNota(String nombreNota) {
+        Nota notaEncontrada = null;
+        for (Nota notaAux : listaNotas) {
+            if (notaAux != null && notaAux.getNombre().equals(nombreNota)) {
+                notaEncontrada = notaAux;
+                break;
+            }
+        }
+        return notaEncontrada;
+    }
+
+    public float calcularCuantoDebeSacar(float promedioEstudiante) {
+        float notaDebeSacar = 0f;
+        float promedioMinAprobar = 3.0f;
+        float sumatoria = 0;
+
+        for (int i = 0; i < listaNotas.length; i++) {
+            Nota notaAux = listaNotas[i];
+            if (notaAux != null) {
+                sumatoria += notaAux.getValor();
+            }
+        }
+        float notaDebeSacarPrimerPaso = (sumatoria * promedioMinAprobar)/promedioEstudiante;
+        notaDebeSacar = notaDebeSacarPrimerPaso - sumatoria;
+        return notaDebeSacar;
+    }
+}
