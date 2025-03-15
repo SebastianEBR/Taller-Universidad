@@ -28,6 +28,7 @@ public class Nota {
         this.valor = valor;
     }
 
+    //metodo toString
     @Override
     public String toString() {
         return "Nota{" +
@@ -35,6 +36,7 @@ public class Nota {
                 '}';
     }
 
+    //metodo para actualizar nota
     public String actualizarNota(float nuevoValorNota) {
         setValor(nuevoValorNota);
         return "nota actualizada";
