@@ -1,0 +1,42 @@
+package org.uniquindio.edu.co.poo.model;
+
+public class Nota {
+    // atributo de clase
+    private String nombre;
+    private float valor;
+
+
+    // constructor
+    public Nota (String nombre, float valor) {
+        this.nombre = nombre;
+        this.valor = valor;
+    }
+
+
+    // metodos get y set
+    public String getNombre() {
+        return nombre;
+    }
+    public float getValor() {
+        return valor;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public void setValor(float valor) {
+        this.valor = valor;
+    }
+
+    @Override
+    public String toString() {
+        return "Nota{" +
+                "nombre='" + nombre + '\'' +
+                '}';
+    }
+
+    public String actualizarNota(float nuevoValorNota) {
+        setValor(nuevoValorNota);
+        return "nota actualizada";
+    }
+}
