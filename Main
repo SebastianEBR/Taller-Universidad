@@ -94,7 +94,7 @@ public class Main {
             }
         }
     }
-
+    // metodos que llaman a los metodos de las clases dependiendo del caso
     private static void registrarEstudiante(Universidad universidad) {
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del estudiante");
         String id = JOptionPane.showInputDialog("Ingrese el ID del estudiante");
